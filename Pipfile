@@ -10,6 +10,8 @@ pylint = "*"
 easysnmp = "*"
 pyinquirer = "*"
 pyfiglet = "*"
+openpyxl = "*"
+pysnmp = "*"
 
 [requires]
 python_version = "3.7"

@@ -7,7 +7,14 @@ Obs: *Código sem licença open-source significa que não é concedida a possibi
 
 
 ## Instalação
-
+Primeiro é necessário instalar o pacote de gerenciamento de ambiente e pacotes `pipenv`, para um melhor gerenciamento dos seus projetos.
+```
+pip3 install pipenv
+```
+Agora, instale o pacote necessário para consultas snmp. Todos os scripts usam esse pacote. Para fazer o menu do script `menu_consulta.py` instale o pacote *PyInquirer*, e instale o *PyFiglet* para gerar o banner.
+'''
+pipenv install pysnmp PyInquirer PyFiglet
+'''
 
 ## Configuração
 

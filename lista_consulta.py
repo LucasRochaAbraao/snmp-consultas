@@ -44,7 +44,7 @@ def load_xlsx(arquivo):
     return dados
 
 def write_xlsx(olt, dados, col):
-    workbook  = openpyxl.load_workbook('descs_online.xlsx')
+    workbook  = openpyxl.load_workbook('descs/descs_online.xlsx')
     worksheet = workbook.active
     if len(dados) < 1:
         print("Não foi possível coletar os dados")
@@ -54,7 +54,7 @@ def write_xlsx(olt, dados, col):
     for row, item in enumerate(dados):
         worksheet.cell(row=row+2, column=col,   value=item[0]) # item = ('desc', 'online', 'sinal')
         worksheet.cell(row=row+2, column=col+1, value=item[2])
-    workbook.save('descs_online.xlsx')
+    workbook.save('descs/descs_online.xlsx')
 
 def get_olts(file_name, item):
     config = configparser.ConfigParser()
@@ -120,7 +120,7 @@ def consulta(olt, descs):
 
 if __name__ == '__main__':
 
-    arquivo = 'descs.xlsx'
+    arquivo = 'descs/descs.xlsx'
     DADOS = load_xlsx(arquivo)
 
     olts_parser = get_olts('snmp/config', 'OLTS')
