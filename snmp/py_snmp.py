@@ -13,6 +13,9 @@ from textwrap import wrap
 from pysnmp import hlapi
 
 def walk(host, comnty, oid):
+    # http://snmplabs.com/pysnmp/docs/pysnmp-hlapi-tutorial.html
+    # http://snmplabs.com/pysnmp/examples/hlapi/asyncore/manager/cmdgen/advanced-topics.html
+    # http://snmplabs.com/pysnmp/examples/hlapi/asyncore/manager/cmdgen/advanced-topics.html
     var_list = []
     for (errorIndication,
          errorStatus,

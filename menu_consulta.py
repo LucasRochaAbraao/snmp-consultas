@@ -56,10 +56,12 @@ def get_placas(placas_gpon_parser):
         placas_gpon[placa] = placas_gpon_parser[placa]
     return placas_gpon
 
-def opcoes(todos_itens, menu_option): # todos_itens = tuple
+def opcoes(todos_itens, menu_option, todas_pons=None): # todos_itens = tuple
     itens = []
     for item in todos_itens:
         itens.append({'name': item.upper()})
+    if todas_pons:
+        itens.append({'name': 'olt inteira'})
     itens.append({'name': menu_option})
     return itens
 
@@ -111,20 +113,20 @@ def mapear_letra(letra, modo, olt=None):
     else:
         return "Opção não encontrada!"
 
-def resultado(olt_ip, pon, saida_todos=None):
+def resultado(olt_ip, pon, olt_inteira=None):
     last_downtime = py_snmp.last_downtime(olt_ip, 'qn31415926', pon)
     down_cause = py_snmp.last_down_cause(olt_ip, 'qn31415926', pon)
     desc_all = py_snmp.descricao(olt_ip, 'qn31415926', pon)
     status_all = py_snmp.status(olt_ip, 'qn31415926', pon)
     
     clientes_com_los = {}
-    if saida_todos:
+    if olt_inteira:
         print('\n\t--- TODOS ---\n')
         print('DESC\tSTATUS\tDOWN_CAUSE\tHORÁRIO')
     for desc, status, down_c, horario in zip(desc_all, status_all, down_cause, last_downtime):
         if down_c == 'los' or down_c == 'sem_info':
             clientes_com_los[desc] = [down_c, horario]
-        if saida_todos:
+        if olt_inteira:
             print(f'{desc}\t{status}\t{down_c}\t{horario}')
     print(f'Total de ONUs na PON: {len(desc_all)}\n')
 
@@ -147,21 +149,29 @@ def main():
     placas_gpon_parser = get_config('snmp/placas_gpon')
     olts = get_olts(olts_parser)
     placas_gpon = get_placas(placas_gpon_parser)
-
-    saida_todos = None
+    
+    olt_inteira = None
     if len(sys.argv) > 2:
         print("Gerando relatório de todos clientes, além dos offline.")
-        saida_todos = True
+        olt_inteira = 'olt inteira'
 
     if len(sys.argv) > 1:
-        if sys.argv[1] == 'todas':
-            saida_todos = True
-        else:
-            olt, pon = consulta_caixa(sys.argv[1], placas_gpon_parser)
-            if saida_todos:
-                resultado(olt, pon, saida_todos=True)
+        if sys.argv[1] == '-h' or sys.argv[1] == '--help':
+            print("Ajuda:\n-h [--help]: Esse menu\n\nModo de usar:\n\
+                menu_consulta [caixa]|[tudo] [tudo]\n    \
+                    ex1: menu_consulta qck-abc-1.01 ---> consulta apenas a pon ABC\n\
+                            ex2: menu_consulta tudo ---> consulta a olt inteira da pon a ser selecionada no próximo menu\n\
+                                    ex3: menu_consulta qck-abc-1.01 tudo ---> consulta a olt inteira da pon ABC")
+            sys.exit()
+        if sys.argv[1] == 'tudo':
+            olt_inteira = 'olt inteira'
+        else: # caixa nap passada
+            caixa_olt, pon = consulta_caixa(sys.argv[1], placas_gpon_parser)
+            if olt_inteira:
+                resultado(caixa_olt, pon, olt_inteira=True)
             else:
-                resultado(olt, pon)
+                print(caixa_olt, pon)
+                resultado(caixa_olt, pon)
             sys.exit()
 
     while True:
@@ -196,8 +206,8 @@ def main():
 
         pon = placas_gpon_parser.get(resposta_placa, resposta_pon.lower())
         
-        if saida_todos:
-            resultado(olt_ip, pon, saida_todos=True)
+        if olt_inteira:
+            resultado(olt_ip, pon, olt_inteira=True)
         else:
             resultado(olt_ip, pon)
         
