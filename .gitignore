@@ -2,3 +2,4 @@ __pycache__
 obfuscate
 Pipfile.lock
 old_code
+switches/
