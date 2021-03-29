@@ -1,19 +1,20 @@
 # SNMP
-Guardo aqui scripts que realizam consultas através de snmp. Não libero esse repositório publicamente devido à possibilidade de vender alguns desses scripts como serviço.
+Guardo aqui scripts que realizam consultas através de snmp, além de criar uma mini lib para consultas em OLTs Huawei.
+Esse repositório também inclui uma licença open source pra copiar (desde que use a mesma licença no seu projeto).
 
 Segue abaixo instruções de instalação, configuração e execução dos códigos.
 
-*Código sem licença open-source significa que não é concedida a permissão de copiar, utilizar, modificar, vender ou distribuir os códigos desse projeto.*
-
-
 ## Instalação
-Primeiro é necessário instalar o pacote de gerenciamento de ambiente e pacotes `pipenv`, para um melhor gerenciamento dos seus projetos.
+Primeiro é necessário instalar, configurar e ativar um ambiente virtual, para um melhor gerenciamento do projeto.
 ```
-pip3 install pipenv
+sudo apt install python3-venv
+python3 -m venv venv
+source venv/bin/activate
+python -m pip install --upgrade pip
 ```
 Agora, instale o pacote necessário para consultas snmp, *pysnmp*. Todos os scripts usam esse pacote. Para fazer o menu do script `menu_consulta.py` instale o pacote *PyInquirer*, e para gerar o banner instale o *PyFiglet*.
 ```
-pipenv install pysnmp PyInquirer PyFiglet
+pip install pysnmp PyInquirer PyFiglet
 ```
 
 ## Configuração
@@ -25,3 +26,5 @@ pipenv install pysnmp PyInquirer PyFiglet
 
 ## Execução
 
+
+Distribuído sob a licença `GNU GENERAL PUBLIC LICENSE`. Veja `LICENSE` para mais informações.

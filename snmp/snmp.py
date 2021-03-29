@@ -1,6 +1,10 @@
 #!/usr/bin/env python3
 # coding=utf-8
 
+"""
+UTILIZE O `py_snmp.py`, ESSE ARQUIVO É APENAS PARA FUTURA REFERÊNCIA. O OUTRO TEM PERFORMANCE MELHOR, MAIS SIMPLES DE USAR, TEM MANUTENÇÃO E CORREÇÃO DE BUG.
+"""
+
 import sys
 from easysnmp import Session
 """

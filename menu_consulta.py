@@ -146,7 +146,7 @@ def main():
     print(Figlet("eftifont").renderText('CONSULTAS GPON'))
     
     olts_parser = get_config('snmp/config', 'OLTS')
-    placas_gpon_parser = get_config('snmp/placas_gpon')
+    placas_gpon_parser = get_config('snmp/placas_gpon_huawei')
     olts = get_olts(olts_parser)
     placas_gpon = get_placas(placas_gpon_parser)
     
