@@ -20,7 +20,7 @@ def get_config(file_name, item):
     return config[f'{item}']
 
 def get_oid_pon(placa, pon):
-    placa_gpon_parser = get_config('snmp/placas_gpon_huawei', f'PLACA_{placa}')
+    placa_gpon_parser = get_config('/snmp/placas_gpon_huawei', f'PLACA_{placa}')
     pon_oid = placa_gpon_parser[f'PON_{pon}']
     return pon_oid
 
