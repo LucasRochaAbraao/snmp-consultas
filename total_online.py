@@ -8,9 +8,10 @@
 ##############################
  
 import sys
+import asyncio
 from snmp import py_snmp
 
-def main():
+async def main():
     addresses = {
         'Bela_Roma': '10.80.80.2',
         'Volta_Redonda': '10.80.80.6',
@@ -33,11 +34,11 @@ def main():
 
     OLT = sys.argv[1]
 
-    status_all = py_snmp.status(addresses[OLT], 'qn31415926')
+    status_all = await py_snmp.status(addresses[OLT], 'qn31415926')
 
     online = []
     for onu in status_all:
-        if onu == '1':
+        if onu == 'online':
             online.append(onu)
 
     print(f'Total de ONUs cadastradas na OLT {OLT}: {len(status_all)}')
@@ -45,4 +46,4 @@ def main():
 
 
 if __name__ == '__main__':
-    main()
+    asyncio.run(main())

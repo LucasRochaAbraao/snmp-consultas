@@ -41,7 +41,7 @@ def walk(host, comnty, oid):
                 var_list.append(str_varBind[str_varBind.index('=')+2:])
     return var_list
 
-def status(olt, comnty, pon=None):
+async def status(olt, comnty, pon=None):
     """ Retorna o status das ONUs da pon passada,
     1 = online,  2 = offline"""
 
@@ -61,7 +61,7 @@ def status(olt, comnty, pon=None):
             status.append('offline')
     return status
 
-def descricao(olt, comnty, pon=None):
+async def descricao(olt, comnty, pon=None):
     """ Retorna as descrições das ONUs da PON passada."""
 
     try: # Tentando realizar o snmpwalk
@@ -74,7 +74,7 @@ def descricao(olt, comnty, pon=None):
         sys.exit()
     return descs_snmp
 
-def last_downtime(olt, comnty, pon=None):
+async def last_downtime(olt, comnty, pon=None):
     """ Retorna data + hora da última queda de cada onu da pon passada. """
 
     try: # Tentando realizar o snmpwalk
@@ -93,7 +93,7 @@ def last_downtime(olt, comnty, pon=None):
         last_downtime_formatado.append(f'{int(dia, 16):02d}-{int(mes, 16):02d}-{int(ano, 16)} {int(hora, 16):02d}:{int(minuto, 16):02d}:{int(segundo, 16):02d}')
     return last_downtime_formatado
 
-def last_down_cause(olt, comnty, pon=None):
+async def last_down_cause(olt, comnty, pon=None):
     """ Retorna o motivo da última queda de cada onu da pon passada. """
 
     try: # Tentando realizar o snmpwalk
@@ -116,7 +116,7 @@ def last_down_cause(olt, comnty, pon=None):
             resultados_value.append("cond_estranha")
     return resultados_value                 # retorna uma lista com as descrições
 
-def potencia(olt, comnty, pon=None, tipo='onu'):
+async def potencia(olt, comnty, pon=None, tipo='onu'):
     """ Retorna o sinal rx de cada onu na pon passada.""" # Saída é meiia estranha :/ ex: ['HWTC\x84½\x00\x9a', 'HWTC¶\x9eD\x9c']
 
     try: # Tentando realizar o snmpwalk
@@ -145,7 +145,7 @@ def potencia(olt, comnty, pon=None, tipo='onu'):
         sinais.append(str(temp))
     return sinais
 
-def serial(olt, comnty, pon=None):
+async def serial(olt, comnty, pon=None):
     """ Retorna o serial de cada onu na pon passada. """ # falta validar
 
     try: # Tentando realizar o snmpwalk
@@ -161,7 +161,7 @@ def serial(olt, comnty, pon=None):
         seriais.append(serial[2:].upper()) # extrai o valor da descrição
     return seriais             # retorna uma lista com as descrições
 
-def temp_placas(olt, comnty, pon):
+async def temp_placas(olt, comnty, pon):
     """ Retorna a temperatura de cada placa da olt. """
     temp_placas = walk(olt, comnty, '1.3.6.1.4.1.2011.2.6.7.1.1.2.1.10')
     temp_values = []
@@ -171,7 +171,7 @@ def temp_placas(olt, comnty, pon):
         temp_values.append(temp) # extrai o valor da descrição
     return temp_values                 # retorna uma lista com as descrições
 
-def uptime_olt(olt, comnty):
+async def uptime_olt(olt, comnty):
     """
     Uptime da OLT em ticks. Conversões:
     segundos = ticks / 100
