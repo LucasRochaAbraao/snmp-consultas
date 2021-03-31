@@ -29,7 +29,7 @@ async def resultado(olt_ip, pon):
     down_cause = await py_snmp.last_down_cause(olt_ip, 'qn31415926', pon)
     desc_all = await py_snmp.descricao(olt_ip, 'qn31415926', pon)
     status_all = await py_snmp.status(olt_ip, 'qn31415926', pon)
-    
+
     print(f'Total de ONUs na PON: {len(status_all)}\n')
     print('DESC\tDOWN_CAUSE\tHORÁRIO')
     for desc, status, down_c, horario in zip(desc_all, status_all, down_cause, last_downtime):
