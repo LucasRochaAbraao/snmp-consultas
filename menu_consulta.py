@@ -5,16 +5,18 @@
 #     LUCAS ROCHA ABRAÃO     #
 #   lucasrabraao@gmail.com   #
 #  github: LucasRochaAbraao  #
-#      ver: 1.0  26/06/2020  #
+#      ver: 1.2  05/04/2021  #
 ##############################
 
 import os
 import sys
 import time
+import asyncio
 import pathlib
 import subprocess
 import configparser
 from snmp import py_snmp
+from decouple import config # pip install python-decouple
 from PyInquirer import style_from_dict, Token, prompt, Separator
 
 # TODO:
@@ -33,8 +35,9 @@ STYLE = style_from_dict({
     Token.Question: '',
 })
 
-def get_config(file_name, item=None): #def get_config(file_name, item): 
-    #config = configparser.ConfigParser()
+SNMP_COMMUNITY = config('COMMUNITY')
+
+def get_config(file_name, item=None):
     if item:
         config = configparser.ConfigParser()
         config.read(str(pathlib.Path(__file__).parent.absolute()) + f'/{file_name}.ini')
@@ -113,11 +116,11 @@ def mapear_letra(letra, modo, olt=None):
     else:
         return "Opção não encontrada!"
 
-def resultado(olt_ip, pon, olt_inteira=None):
-    last_downtime = py_snmp.last_downtime(olt_ip, 'qn31415926', pon)
-    down_cause = py_snmp.last_down_cause(olt_ip, 'qn31415926', pon)
-    desc_all = py_snmp.descricao(olt_ip, 'qn31415926', pon)
-    status_all = py_snmp.status(olt_ip, 'qn31415926', pon)
+async def resultado(olt_ip, pon, olt_inteira=None):
+    last_downtime = await py_snmp.last_downtime(olt_ip, SNMP_COMMUNITY, pon)
+    down_cause = await py_snmp.last_down_cause(olt_ip, SNMP_COMMUNITY, pon)
+    desc_all = await py_snmp.descricao(olt_ip, SNMP_COMMUNITY, pon)
+    status_all = await py_snmp.status(olt_ip, SNMP_COMMUNITY, pon)
     
     clientes_com_los = {}
     if olt_inteira:
@@ -139,7 +142,7 @@ def resultado(olt_ip, pon, olt_inteira=None):
             print(f'{desc}\t{down_c}\t{horario}')
     print(f"Total de ONUs offline na PON: {status_all.count('offline')}")
 
-def main():
+async def main():
     #subprocess.Popen("clear")
     from pyfiglet import Figlet
     # http://www.figlet.org/examples.html
@@ -149,7 +152,7 @@ def main():
     placas_gpon_parser = get_config('snmp/placas_gpon_huawei')
     olts = get_olts(olts_parser)
     placas_gpon = get_placas(placas_gpon_parser)
-    
+
     olt_inteira = None
     if len(sys.argv) > 2:
         print("Gerando relatório de todos clientes, além dos offline.")
@@ -204,12 +207,12 @@ def main():
         print(f"Placa Selecionada: {resposta_placa}")
         print(f"PON selecionada: {resposta_pon}")
 
-        pon = placas_gpon_parser.get(resposta_placa, resposta_pon.lower())
+        pon = placas_gpon.get(resposta_placa)[resposta_pon]
         
         if olt_inteira:
-            resultado(olt_ip, pon, olt_inteira=True)
+            await resultado(olt_ip, pon, olt_inteira=True)
         else:
-            resultado(olt_ip, pon)
+            await resultado(olt_ip, pon)
         
         denovo = input("\n\nDeseja consultar novamente? (s/N):  ")
         if denovo.lower().startswith('s'):
@@ -217,4 +220,4 @@ def main():
         sys.exit()
 
 if __name__ == '__main__':
-    main()
+    asyncio.run(main())

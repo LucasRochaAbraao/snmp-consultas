@@ -1,0 +1,14 @@
+pkg-resources==0.0.0
+ply==3.11
+prompt-toolkit==1.0.14
+pyasn1==0.4.8
+pycryptodomex==3.10.1
+pyfiglet==0.8.post1
+Pygments==2.8.1
+PyInquirer==1.0.3
+pysmi==0.3.4
+pysnmp==4.4.12
+python-decouple==3.4
+regex==2021.4.4
+six==1.15.0
+wcwidth==0.2.5

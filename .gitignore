@@ -3,5 +3,6 @@ obfuscate
 Pipfile.lock
 old_code
 switches/
-venv
+.venv
 .vscode/
+.env
