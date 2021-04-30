@@ -52,6 +52,9 @@ async def main():
     sinais_rx = await py_snmp.potencia(addresses[OLT][0], 'qn31415926', tipo='rx', fabricante=addresses[OLT][1])
     #sinais_tx = await py_snmp.potencia(addresses[OLT], 'qn31415926', tipo="tx") # Encontrar o oid correto!
     
+    if len(descs) != len(sinais_rx):
+        print(f"Cuidado! Informação inconsistente a seguir. Quantidade de ONUs online é diferente da quantidade de ONUs com descrição!\n### {len(sinais_rx)} online vs {len(descs)} com descrição ###")
+
     achou = None
     for desc, sinal_rx in zip(descs, sinais_rx):
         if DESC in desc:
