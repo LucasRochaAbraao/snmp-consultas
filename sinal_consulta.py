@@ -47,13 +47,16 @@ async def main():
     DESC = sys.argv[2]
     # 12978-QCK-DBA-107
 
+    fabricante = addresses[OLT][1]
+
     print("Um instante! Estamos verificando...")
-    descs = await py_snmp.descricao(addresses[OLT][0], 'qn31415926', fabricante=addresses[OLT][1])
+    descs = await py_snmp.descricao(addresses[OLT][0], 'qn31415926', fabricante=fabricante)
     sinais_rx = await py_snmp.potencia(addresses[OLT][0], 'qn31415926', tipo='rx', fabricante=addresses[OLT][1])
     #sinais_tx = await py_snmp.potencia(addresses[OLT], 'qn31415926', tipo="tx") # Encontrar o oid correto!
     
     if len(descs) != len(sinais_rx):
-        print(f"Cuidado! Informação inconsistente a seguir. Quantidade de ONUs online é diferente da quantidade de ONUs com descrição!\n### {len(sinais_rx)} online vs {len(descs)} com descrição ###")
+        if fabricante == "datacom":
+            print(f"Cuidado! Informação inconsistente a seguir. Quantidade de ONUs online é diferente da quantidade de ONUs com descrição!\n### {len(sinais_rx)} online vs {len(descs)} com descrição ###")
 
     achou = None
     for desc, sinal_rx in zip(descs, sinais_rx):
