@@ -65,7 +65,7 @@ async def main():
         if DESC in desc:
             achou = 'sim'
             if sinal_rx == "onu offline":
-                print("ONU está offline!")
+                print(f"{desc}: ONU está offline!")
             else:
                 print(f"Cliente: {desc} | Sinal: {sinal_rx} dBm")
     if not achou:
