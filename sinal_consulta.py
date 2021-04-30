@@ -57,9 +57,14 @@ async def main():
 
     achou = None
     for desc, sinal_rx in zip(descs, sinais_rx):
+        if sinal_rx == "0.00":
+            sinal_rx = "onu offline"
         if DESC in desc:
             achou = 'sim'
-            print(f"Cliente: {desc} | Sinal: {sinal_rx} dBm")
+            if sinal_rx == "onu offline":
+                print("ONU está offline!")
+            else:
+                print(f"Cliente: {desc} | Sinal: {sinal_rx} dBm")
     if not achou:
         print(f"Verifique a descrição do cliente, pois não consegui encontrar na OLT selecionada!")
 
