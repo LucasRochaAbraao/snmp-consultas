@@ -16,7 +16,7 @@ import pathlib
 import subprocess
 import configparser
 from snmp import py_snmp
-from decouple import config # pip install python-decouple
+from decouple import Config, RepositoryEnv # pip install python-decouple
 from PyInquirer import style_from_dict, Token, prompt, Separator
 
 # TODO:
@@ -35,6 +35,9 @@ STYLE = style_from_dict({
     Token.Question: '',
 })
 
+#DOTENV_FILE = '/home/lucas/Dev/snmp-consultas/.env'
+DOTENV_FILE = f'{os.path.dirname(os.readlink(os.path.abspath(__file__)))}/.env'
+config = Config(RepositoryEnv(DOTENV_FILE))
 SNMP_COMMUNITY = config('COMMUNITY')
 
 def get_config(file_name, item=None):
