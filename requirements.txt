@@ -4,7 +4,7 @@ prompt-toolkit==1.0.14
 pyasn1==0.4.8
 pycryptodomex==3.10.1
 pyfiglet==0.8.post1
-Pygments==2.8.1
+Pygments==2.15.0
 PyInquirer==1.0.3
 pysmi==0.3.4
 pysnmp==4.4.12
